@@ -1,5 +1,5 @@
 class PublicInformation:
-    def __init__(self, n, generator):
+    def __init__(self, n, generator=[]):
         self.n = n
         self.X = generator
         self.size = len(self.X)
@@ -12,6 +12,10 @@ class PublicInformation:
 
     def get_generator(self):
         return self.X
+    
+    def update_generator(self, generator):
+        self.X = generator
+        self.size = len(generator)
     
     def transmit_Alice(self, A):
         self.Alice = A
@@ -46,3 +50,9 @@ class PublicInformation:
 
     def cycle_form_to_map(self, cycles):
         ret = self.get_identity()
+        for i in cycles:
+            for j in range(len(i)-1):
+                ret[i[j]] = i[j+1]
+            ret[i[len(i) - 1]] = i[0]
+        
+        return ret
