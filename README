@@ -1,0 +1,19 @@
+This program is a simulation of the Anshel-Anshel-Goldfeld key exchange using the symmetric group as a platform.
+
+
+Instructions
+1. To run the key exchange, open the terminal and run the command 'python3 AAG_sim.py'
+2. The first prompt will ask for the degree of the group. For example, input 5 for S_5.
+3. The next prompt will ask for the number of generators in the group.
+4. You will then be asked to enter each of the generators in order, in cycle decomposition form. The code is zero indexed, so elements of the symmetric group are represented as functions from {0, 1, ... n-1} to itself. For instance, entering (0 1 2 3 4) corresponds to the canonical five-cycle in S_5.
+5. After entering all of the generators, the console will display the result of the key exchange. You will be able to see Alice and Bob's generated private keys, their transmissions, and then their computed shared key.
+6. Finally, Eve's solution to the key exchange will be displayed to be compared against the ones used by Alice and Bob.
+
+
+
+Structure
+The code is structured over 4 main files.
+1. Exchange: The exchange file holds the main "channel" for the key exchange. The key exchange is initialized by presenting generators for the PublicInformation class. When Alice or Bob transmit data to each other, they do it by posting it in this class. This gives makes such data public.
+2. Alice and Bob: Alice and Bob access the PublicInformation channel in order to get the set of generators and each compute a private key. This is done within the class, so it is not visible to any other objects. They then transmit the conjugate of the generator set and get each others transmissions. They then privately compute the shared key.
+3. Eve: Eve accesses the PublicInformation channel and gets the set of generators, as well as each of Alice and Bob's conjugates of the generators. Eve then looks to find the private keys based on this information. The work of this is done by solving the simultaneous conjugacy problem using the relabel function.
+4. AAG_sim.py: This is the driver code in which users can input data representing a generating set and then observe Eve cracking the subsequent key exchange.
